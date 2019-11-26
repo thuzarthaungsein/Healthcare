@@ -1,0 +1,1722 @@
+<template>
+
+  <div class="card profile m-t-22 " style="border:none;">
+    <form class="col-md-12 form-class">
+     <div class="col-md-12 pad-free">
+
+        <div class="form-group form-group-wrapper">
+
+                <label class="heading-lbl">名前<span class="error">*</span></label>
+
+                <input type="text" class="form-control customer-name col-10 float-right" placeholder="Name" v-model="customer_info.name">
+        </div>
+
+        <div class="form-group form-group-wrapper">
+
+                <label class="heading-lbl">メールアドレス<span class="error">*</span></label>
+                <label class=" col-10 float-right customer-email"> {{customer_info.email}} </label>
+
+                <!-- <input type="text" class="form-control customer-email col-10 float-right"  placeholder="Email" v-model="customer_info.email"> -->
+        </div>
+        <div class="form-group form-group-wrapper">
+
+                <label class="heading-lbl">電話番号<span class="error">*</span></label>
+
+                <input type="text" class="form-control customer-phone col-10 float-right"  placeholder="Phone" v-model="customer_info.phone">
+
+        </div>
+
+        <!-- <div class="form-group">
+                <label>フォトアルバム<span class="error">*</span></label>
+                <input type="file" class="" value="Upload Photo" id="upload_file" @change="preview_image();" multiple>
+                <div class="col-md-12">
+                        <div class="row" id="image_preview"></div>
+                </div>
+        </div>-->
+
+        <div class="form-group form-group-wrapper">
+
+          <label class="heading-lbl col-2 pad-free">フォトアルバム</label>
+
+          <span class="galleryadd btn all-btn main-bg-color float-right" style="min-width: 0px;" @click="galleryAdd()">
+         
+            <i class="fas fa-plus-circle"></i> 追加
+
+          </span>
+           <span class='changeGalleryLink btn btn all-btn main-bg-color ' style="min-width: 0px;" @click="galleryToggle" >
+                  <i id="gallery" class="fas fa-sort-down"></i>
+            </span>
+
+          <div id="changeGalleryLink" class="col-md-12">
+                <div class="row" id ="gallery-photo">   
+                        <div class="col-md-6 gallery-area-photo" v-bind:id="'photo'+indx" v-for="(img,indx) in img_arr" :key="img.id">
+                                <div class="col-md-12">
+                                        <input type="file" name="" class="hospital-photo m-b-10" v-bind:class="img.classname" id="upload_img" @change="preview_image(img.classname,indx)">
+                                        <div class="col-md-12 m-b-10" v-bind:class="img.classname">
+                                                <input type="hidden" class="already-photo" v-model="img.photo">
+                                                <img :src="'/upload/hospital_profile/'+ img.photo" class="img-fluid" alt="profile" v-if="img.photo" v-bind:id="'already-photo'+indx" @error="imgUrlAlt">
+                                        </div>
+                                </div>
+                                <div class="col-md-12">
+                                        <input type="text" name="title" placeholder="タイトル" class="form-control m-b-15 title white-bg-color" v-model="img.title">
+                                        <textarea name="description" placeholder="コンテンツ" class="form-control m-b-15 description white-bg-color" v-model="img.description"></textarea>
+                                </div>
+                                <div class="col-md-12 text-right">
+                                        <a class="mr-auto text-danger btn delete-borderbtn" @click="DeltArr(indx,'photo')"> <i class="fa fa-trash"></i> 削除</a>
+                                </div>
+                        </div>
+                </div>
+          </div>
+
+          <!-- <div class="col-md-12">
+
+
+            <div class="row" id="gallery-photo">
+
+           
+
+              <div
+
+                class="col-md-6 gallery-area-photo"
+
+                v-bind:id="'photo'+indx"
+
+                v-for="(img,indx) in img_arr"
+
+                :key="img.id"
+
+              >
+            
+
+                <div class="col-md-12">
+
+                  <input type="file" name class="hospital-photo m-b-15" v-bind:class="img.classname" id="upload_img" @change="preview_image(img.classname,indx)" />
+
+                  <div class="col-md-12" v-bind:class="img.classname">
+
+                    <input type="hidden" class="already-photo" v-model="img.photo" />
+
+                    <img :src="'/upload/hospital_profile/'+ img.photo" class="img-fluid hospital-image" alt="profile" v-if="img.photo" v-bind:id="'already-photo'+indx" @error="imgUrlAlt"/>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-12">
+
+                  <input type="text" name="title" placeholder="タイトル" class="form-control m-b-15 title white-bg-color" v-model="img.title" />
+
+                  <textarea name="description" placeholder="コンテンツ" class="form-control m-b-15 description white-bg-color" v-model="img.description" ></textarea>
+
+                </div>
+                <div class="col-md-12 text-right">
+                  <a class="mr-auto text-danger btn delete-borderbtn" @click="DeltArr(indx,'photo')">
+                    <i class="fa fa-trash"></i> 削除
+                  </a>
+                 </div>
+
+              </div>
+
+            </div>
+
+          </div> -->
+
+        </div>
+
+        <div class="form-group form-group-wrapper">
+
+          <label class="heading-lbl col-2 pad-free">動画</label>
+
+          <span class="galleryvideo btn all-btn main-bg-color float-right" style="min-width: 0px;" @click="galleryVideoAdd()" >
+
+            <i class="fas fa-plus-circle"></i> 追加
+
+          </span>
+
+           <span class='changeGalleryVideoLink  btn btn all-btn main-bg-color ' style="min-width: 0px;" @click="galleryVideoToggle" >
+                                        <i id="video" class="fas fa-sort-down"></i>
+           </span>
+
+          <div id="changeGalleryVideoLink" class="col-md-12">
+
+            <div class="row" id="gallery-video">
+
+              <!-- Add by + Button -->
+
+              <div class="col-md-6 gallery-area-video" v-bind:id="'video'+indx" v-for="(video,indx) in video_arr" :key="video.id" >
+
+                <div class="col-md-12">
+
+                  <input type="text" name="url" placeholder="url" class="form-control m-b-15 video-url white-bg-color" v-model="video.photo" />
+
+                </div>
+
+                <div class="col-md-12">
+
+                  <input type="text" name="title" placeholder="タイトル" class="form-control m-b-15 title white-bg-color" v-model="video.title" />
+
+                  <textarea name="description" placeholder="コンテンツ" class="form-control m-b-15 description white-bg-color" v-model="video.description" ></textarea>
+
+                </div>
+                <div class="col-md-12 text-right">
+                  <a class="mr-auto text-danger btn delete-borderbtn" @click="DeltArr(indx,'video')">
+
+                  <i class="fa fa-trash"></i> 削除
+
+                  </a>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- <div class="form-group form-group-wrapper row ml-0 mr-0">
+          <label class="heading-lbl col-2 pad-free">
+            診療科目
+            <span class="error">*</span>
+          </label>
+          <textarea
+            name="medicaldepartment"
+            class="form-control col-10 white-bg-color subject"
+            v-model="hospital_info.subject"
+          ></textarea>
+        </div> -->
+
+        <!-- test -->
+        <table class="table table-bordered table-wrapper">
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label  class="heading-lbl col-2 pad-free">診療科目</label>
+                        <span class="btn all-btn main-bg-color" style="min-width: 0px;" @click="clinicalSubject()"><i class="fas fa-sort-down animate" :class="{'rotate': isRotate1}"></i></span>
+                        <div class="col-md-10 float-right clinical-subject-toggle-div toggle-div m-t-10">
+                            <div class="row"> <div v-for="subj in clinical_subj" :key="subj.id" class="form-check form-check-inline col-sm-3">
+                                    <label class="form-check-label control control--checkbox" style="padding-left:5px;">
+                                        <input type="checkbox" class="form-check-input"  name="subject" v-bind:value="subj.id" @click="subjectCheck(subj.id)" v-model="subj.checked">
+                                          {{subj.name}}
+                                        <div class="control__indicator"></div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+              </tr>
+          </table>
+        <!-- end -->
+
+
+
+        <div class="form-group form-group-wrapper row ml-0 mr-0">
+
+          <label class="heading-lbl col-2 pad-free">
+
+            専門医
+
+            <span class="error">*</span>
+
+          </label>
+
+          <textarea
+
+            name="specialist"
+
+            class="form-control col-10 specialist white-bg-color"
+
+            v-model="hospital_info.specialist"
+
+          ></textarea>
+
+        </div>
+        <table class="table table-bordered table-wrapper">
+          <tr>
+                  <td class="width17" style="border:none;"> <label class="heading-lbl pad-free"> 医院からのお知らせ<span class="error">*</span></label></td>
+                  <td style="border:none;">
+                          <!-- <textarea name="feature" id="" cols="30" rows="10" ></textarea> -->
+                          <quill-editor  ref="myQuilEditor" name="detailsinfo" class="details-info" v-model="hospital_info.details_info" :options="editorOption"/>
+                  </td>
+          </tr>
+        </table>
+        <!-- <div class="form-group">
+                            <label class="heading-lbl">診療科目<span class="error">*</span></label>
+                            <textarea name="subject" class="form-control"></textarea>
+        </div>-->
+
+        <table class="table table-bordered table-wrapper">
+
+          <tr>
+
+            <td>
+
+              <label class="heading-lbl col-2 pad-free">診療時間</label>
+
+              <span
+
+                class="btn all-btn main-bg-color"
+
+                style="min-width: 0px;"
+
+                @click="scheduletogglediv()"
+
+              >
+
+                <i class="fas fa-sort-down animate" :class="{'rotate': isRotate2}"></i>
+
+              </span>
+
+              <div class="col-md-10 float-right m-t-10 schedule-toggle-div toggle-div pad-free">
+
+                <div class="col-12">
+
+                  <div class="row">
+
+                    <table class="table table-striped table-bordered">
+
+                      <tr>
+
+                        <th>&nbsp;</th>
+
+                        <th class="text-center">午前</th>
+
+                        <th class="text-center">午後</th>
+
+                      </tr>
+
+                      <tr>
+
+                        <td>月</td>
+
+                        <td>
+
+                          <div class="row">
+
+                            <div class="col-lg-6">
+
+                              <span>から:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control am-from0 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.am_mon_from"
+
+                              />
+
+                            </div>
+
+                            <div class="col-lg-6">
+
+                              <span>まで:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control am-to0 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.am_mon_to"
+
+                              />
+
+                            </div>
+
+                          </div>
+
+                        </td>
+
+                        <td>
+
+                          <div class="row">
+
+                            <div class="col-lg-6">
+
+                              <span>から:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control pm-from0 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.pm_mon_from"
+
+                              />
+
+                            </div>
+
+                            <div class="col-lg-6">
+
+                              <span>まで:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control pm-to0 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.pm_mon_to"
+
+                              />
+
+                            </div>
+
+                          </div>
+
+                        </td>
+
+                      </tr>
+
+                      <tr>
+
+                        <td>火</td>
+
+                        <td>
+
+                          <div class="row">
+
+                            <div class="col-lg-6">
+
+                              <span>から:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control am-from1 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.am_tue_from"
+
+                              />
+
+                            </div>
+
+                            <div class="col-lg-6">
+
+                              <span>まで:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control am-to1 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.am_tue_to"
+
+                              />
+
+                            </div>
+
+                          </div>
+
+                        </td>
+
+                        <td>
+
+                          <div class="row">
+
+                            <div class="col-lg-6">
+
+                              <span>から:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control pm-from1 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.pm_tue_from"
+
+                              />
+
+                            </div>
+
+                            <div class="col-lg-6">
+
+                              <span>まで:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control pm-to1 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.pm_tue_to"
+
+                              />
+
+                            </div>
+
+                          </div>
+
+                        </td>
+
+                      </tr>
+
+                      <tr>
+
+                        <td>水</td>
+
+                        <td>
+
+                          <div class="row">
+
+                            <div class="col-lg-6">
+
+                              <span>から:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control am-from2 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.am_wed_from"
+
+                              />
+
+                            </div>
+
+                            <div class="col-lg-6">
+
+                              <span>まで:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control am-to2 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.am_wed_to"
+
+                              />
+
+                            </div>
+
+                          </div>
+
+                        </td>
+
+                        <td>
+
+                          <div class="row">
+
+                            <div class="col-lg-6">
+
+                              <span>から:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control pm-from2 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.pm_wed_from"
+
+                              />
+
+                            </div>
+
+                            <div class="col-lg-6">
+
+                              <span>まで:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control pm-to2 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.pm_wed_to"
+
+                              />
+
+                            </div>
+
+                          </div>
+
+                        </td>
+
+                      </tr>
+
+                      <tr>
+
+                        <td>木</td>
+
+                        <td>
+
+                          <div class="row">
+
+                            <div class="col-lg-6">
+
+                              <span>から:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control am-from3 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.am_thu_from"
+
+                              />
+
+                            </div>
+
+                            <div class="col-lg-6">
+
+                              <span>まで:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control am-to3 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.am_thu_to"
+
+                              />
+
+                            </div>
+
+                          </div>
+
+                        </td>
+
+                        <td>
+
+                          <div class="row">
+
+                            <div class="col-lg-6">
+
+                              <span>から:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control pm-from3 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.pm_thu_from"
+
+                              />
+
+                            </div>
+
+                            <div class="col-lg-6">
+
+                              <span>まで:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control pm-to3 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.pm_thu_to"
+
+                              />
+
+                            </div>
+
+                          </div>
+
+                        </td>
+
+                      </tr>
+
+                      <tr>
+
+                        <td>金</td>
+
+                        <td>
+
+                          <div class="row">
+
+                            <div class="col-lg-6">
+
+                              <span>から:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control am-from4 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.am_fri_from"
+
+                              />
+
+                            </div>
+
+                            <div class="col-lg-6">
+
+                              <span>まで:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control am-to4 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.am_fri_to"
+
+                              />
+
+                            </div>
+
+                          </div>
+
+                        </td>
+
+                        <td>
+
+                          <div class="row">
+
+                            <div class="col-lg-6">
+
+                              <span>から:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control pm-from4 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.pm_fri_from"
+
+                              />
+
+                            </div>
+
+                            <div class="col-lg-6">
+
+                              <span>まで:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control pm-to4 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.pm_fri_to"
+
+                              />
+
+                            </div>
+
+                          </div>
+
+                        </td>
+
+                      </tr>
+
+                      <tr>
+
+                        <td>土</td>
+
+                        <td>
+
+                          <div class="row">
+
+                            <div class="col-lg-6">
+
+                              <span>から:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control am-from5 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.am_sat_from"
+
+                              />
+
+                            </div>
+
+                            <div class="col-lg-6">
+
+                              <span>まで:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control am-to5 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.am_sat_to"
+
+                              />
+
+                            </div>
+
+                          </div>
+
+                        </td>
+
+                        <td>
+
+                          <div class="row">
+
+                            <div class="col-lg-6">
+
+                              <span>から:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control pm-from5 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.pm_sat_from"
+
+                              />
+
+                            </div>
+
+                            <div class="col-lg-6">
+
+                              <span>まで:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control pm-to5 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.pm_sat_to"
+
+                              />
+
+                            </div>
+
+                          </div>
+
+                        </td>
+
+                      </tr>
+
+                      <tr>
+
+                        <td>日</td>
+
+                        <td>
+
+                          <div class="row">
+
+                            <div class="col-lg-6">
+
+                              <span>から:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control am-from6 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.am_sun_from"
+
+                              />
+
+                            </div>
+
+                            <div class="col-lg-6">
+
+                              <span>まで:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control am-to6 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.am_sun_to"
+
+                              />
+
+                            </div>
+
+                          </div>
+
+                        </td>
+
+                        <td>
+
+                          <div class="row">
+
+                            <div class="col-lg-6">
+
+                              <span>から:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control pm-from6 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.pm_sun_from"
+
+                              />
+
+                            </div>
+
+                            <div class="col-lg-6">
+
+                              <span>まで:</span>
+
+                              <input
+
+                                type="text"
+
+                                class="form-control pm-to6 white-bg-color" placeholder="0:00"
+
+                                v-model="schedule_arr.pm_sun_to"
+
+                              />
+
+                            </div>
+
+                          </div>
+
+                        </td>
+
+                      </tr>
+
+                    </table>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </table>
+
+
+
+        <div class="form-group form-group-wrapper row ml-0 mr-0">
+
+          <label class="heading-lbl col-2 pad-free">休診日</label>
+
+          <textarea
+
+            name="close-day"
+
+            class="form-control white-bg-color close-day col-10"
+
+            v-model="hospital_info.closed_day"
+
+          ></textarea>
+
+        </div>
+
+
+
+        <table class="table table-bordered table-wrapper">
+
+          <tr>
+
+            <td>
+
+              <div class="form-group">
+
+                <label class="heading-lbl col-2 pad-free">施設情報</label>
+
+                <span
+
+                  class="btn all-btn main-bg-color"
+
+                  style="min-width: 0px;"
+
+                  @click="factogglediv()"
+
+                >
+
+                  <i class="fas fa-sort-down animate"  :class  ="{'rotate': isRotate3}"></i>
+
+                </span>
+
+
+
+                <div class="col-md-10 float-right hos-fac-toggle-div toggle-div m-t-10">
+
+                  <div class="row">
+
+                    <div v-for="fac in fac_list" :key="fac.id" class="form-check form-check-inline col-sm-3">
+
+                      <label class="form-check-label control control--checkbox" style="padding-left:5px;">
+
+                        <input type="checkbox" class="form-check-input" name="facility" :class="'facility-'+fac.id" v-bind:value="fac.id" @click="facilityCheck(fac.id)" v-model="fac.checked" />
+
+                        {{fac.description}}
+                        <div class="control__indicator"></div>
+                      </label>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </table>
+
+
+
+        <table class="table table-bordered table-wrapper">
+
+          <tr>
+
+            <td>
+
+              <div class="form-group">
+
+                <label class="heading-lbl col-2 pad-free">
+
+                  こだわりの特長
+
+                  <span class="error">*</span>
+
+                </label>
+
+                <span
+
+                  class="btn all-btn main-bg-color"
+
+                  style="min-width: 0px;"
+
+                  @click="specialFeAdd()"
+
+                >
+
+                  <i class="fas fa-sort-down animate" :class="{rotate:isRotate4}"></i>
+
+                </span>
+
+
+
+                <div class="col-md-10 float-right special-feature-toggle-div toggle-div m-t-10">
+
+                  <div class="row">
+
+                    <div v-for="feat in feature_list" :key="feat.id" class="form-check form-check-inline col-sm-3">
+
+                      <label class="form-check-label control control--checkbox" style="padding-left:5px;">
+
+                        <input type="checkbox" class="form-check-input" name="special-features" :class="'feature-'+feat.id" v-bind:value="feat.id" @click="featureCheck(feat.id)" v-model="feat.checked"/>
+
+                        {{feat.name}}
+                        <div class="control__indicator"></div>
+
+                      </label>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </table>
+
+
+
+        <div class="form-group form-group-wrapper row ml-0 mr-0">
+
+          <label class="heading-lbl col-2 pad-free">公式サイト</label>
+
+          <input
+
+            type="text"
+
+            name="official-website"
+
+            class="form-control col-10 website white-bg-color"
+
+            v-model="hospital_info.website"
+
+          />
+
+        </div>
+
+
+
+        <div class="form-group form-group-wrapper row mr-0 ml-0">
+
+          <label class="heading-lbl col-2 pad-free">混雑状況</label>
+
+          <textarea
+
+            name="congestion"
+
+            class="form-control col-10 congestion white-bg-color"
+
+            v-model="hospital_info.congestion"
+
+          ></textarea>
+
+        </div>
+
+
+
+        <!-- <div class="form-group form-group-wrapper">
+          <label class="heading-lbl">地図</label>
+          <span
+            class="btn all-btn main-bg-color m-l-10"
+            style="min-width: 0px;"
+            @click="maptogglediv()"
+          >
+            <i class="fas fa-sort-down"></i>
+          </span>
+          <div class="map-toggle-div toggle-div">
+            <div class="col-md-12">
+              <GoogleMap></GoogleMap>
+            </div>
+            <div class="form-group">
+              <label>
+                郵便番号
+                <span class="error">*</span>
+              </label>
+              <input
+                type="text"
+                v-model="this.postal"
+                name="postal"
+                class="postal form-control"
+                id="postal"
+                v-on:keyup="getPostal"
+                placeholder="郵便番号を入力してください。"
+                maxlength="7"
+              />
+              <div id="jsErrorMessage"></div>
+            </div>
+            <div class="form-group">
+              <label>
+                市区町村、番地（建物名）:
+                <span class="error sp1">必須</span>
+              </label>
+              <input
+                type="text"
+                id="city"
+                name="city"
+                class="city form-control"
+                placeholder="市区町村、番地を入力してください。"
+                v-model="this.city"
+        />-->
+
+        <!-- <span v-if="errors.city" class="error">{{errors.city[0]}}</span> -->
+
+        <!-- <input type="text" class="form-control" id="city" placeholder="市区町村、番地を入力してください。" v-model="zipStreet"> -->
+
+        <!-- <p>例）東京都千代田区丸の内1-9-1 グラントウキョウノースタワー40階</p>
+            </div>
+            <div class="form-group">
+              <label>
+                住所
+                <span class="error">*</span>
+              </label>
+              <textarea
+                name="address"
+                rows="10"
+                class="form-control customer-address"
+                v-model="customer_info.address"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label>
+                交通 / アクセス
+                <span class="error">*</span>
+              </label>
+              <textarea
+                name="access"
+                rows="10"
+                class="form-control access"
+                v-model="hospital_info.access"
+              ></textarea>
+            </div>
+          </div>
+        </div>-->
+
+
+
+        <!-- <table class="table table-bordered table-wrapper">
+
+          <tr>
+
+            <td>
+
+              <label class="heading-lbl col-2 pad-free">地図</label>
+
+              <span
+
+                class="btn all-btn main-bg-color"
+
+                style="min-width: 0px;"
+
+                @click="maptogglediv()"
+
+              >
+
+                <i class="fas fa-sort-down animate" :class="{rotate:isRotate5}"></i>
+
+              </span>
+
+              <div class="col-md-10 float-right m-t-10 map-toggle-div toggle-div pad-free">
+
+                <div class="col-md-12">
+
+                    <GoogleMap :address="customer_info.address" :lat_num='nursing_info.latitude' :lng_num='nursing_info.longitude' v-if="nursing_info.latitude != 0"></GoogleMap>
+                    <GoogleMap :address="customer_info.address" :lat_num='35.6803997' :lng_num='139.76901739' v-if="nursing_info.latitude == 0"></GoogleMap>
+
+
+
+                  <div class="form-group">
+
+                    <label>
+                      交通 / アクセス
+
+                      <span class="error">*</span>
+
+                    </label>
+
+                    <textarea
+
+                      name="access"
+
+                      rows="10"
+
+                      class="form-control access white-bg-color"
+
+                      v-model="hospital_info.access"
+
+                    ></textarea>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </table> -->
+        <table class="table table-bordered table-wrapper">
+                    <tr>
+                        <td>
+                            <label class="heading-lbl col-2 pad-free">地図</label>
+                            <span class="btn all-btn main-bg-color" style="min-width: 0px;" @click="maptogglediv()"><i class="fas fa-sort-down animate" :class="{'rotate': isRotate5}"></i></span>
+                            <div class="col-md-10 float-right m-t-10 map-toggle-div toggle-div pad-free">
+                                <div class="col-md-12">
+                                    <GoogleMap :address="customer_info.address" :lat_num='hospital_info.latitude' :lng_num='hospital_info.longitude' v-if="hospital_info.latitude != 0"></GoogleMap>
+                                    <GoogleMap :address="customer_info.address" :lat_num='35.6803997' :lng_num='139.76901739' v-if="hospital_info.latitude == 0"></GoogleMap>
+
+                                    <div class="form-group">
+                                            <label>交通 / アクセス<span class="error">*</span></label>
+                                            <!-- <textarea name="address" rows="10" class="form-control"></textarea> -->
+                                            <quill-editor  ref="myQuilEditor" name="address" :options="editorOption" class="transporation-access" @change="onAccessEditorChange($event)" v-model="hospital_info.access"/>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+
+
+        <!-- Consultation -->
+
+
+
+        <!-- End Consultation -->
+
+
+
+        <!-- Facilities -->
+
+
+
+        <!-- End Facilities -->
+
+
+
+        <!-- <hr class="hor-line m-t-30"> -->
+
+
+
+        <!-- <hr class="hor-line m-t-30"> -->
+
+
+
+        <!-- Map -->
+
+
+
+        <!-- End Map -->
+
+        <div style="position:fixed;width:100%;background:rgba(0,0,0,.5);left:0;right:0;bottom:0;padding:0 0 10px 0;">
+            <div class="row col-2 col-offset-5 mx-auto">
+                <span class="btn secondary-bg-color col-8 offset-2 all-btn m-t-15 pad-10" @click="Create_Profile()">作成</span>
+            </div>
+        </div>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</template>
+
+
+
+<script>
+import 'quill/dist/quill.snow.css'
+import {quillEditor} from 'vue-quill-editor'
+import {Button, Input,Select} from 'iview'
+import GoogleMap from './GoogleMap.vue'
+export default {
+         components: {
+                GoogleMap,
+                Button,
+                Input,
+                Select,
+                quillEditor
+        },
+       data() {
+                return {
+                        fac_list: [],
+                        img_arr:[],img_list:[],
+                        video_arr:[], video_list:[],gallery_list:[],
+                        feature_list:[],
+                        profile_type:'hospital',
+                        schedule_arr:[],shedule_am:[],shedule_pm:[],
+                        schedule_list:[],
+                        customer_info:[],
+                        customer_info_push:[],
+                        hospital_info:[],  save_hospital_info:[],
+                        chek_feature : [],
+                        subjects:[],
+                        city: '',
+                        postal: '',clinical_subj:[],
+                        isRotate1: false,
+                        isRotate2: false,
+                        isRotate3: false,
+                        isRotate4: false,
+                        isRotate5: false,
+                          editorOption:{
+                        debug:'info',
+                        placeholder:'Type your post...',
+                        readonly:true,
+                        theme:'snow',
+                        access_val: '',
+                },
+                }
+        },
+        created(){
+
+                if(this.type != undefined && this.cusid!= undefined){
+                        localStorage.setItem('cusType',this.type);
+                        localStorage.setItem('cusId',this.cusid);
+                }
+
+                this.type = localStorage.getItem('cusType');
+                this.cusid = Number(localStorage.getItem('cusId'));
+
+                this.axios
+                .get('/clinical-subject/'+this.cusid)
+                .then(response=>{
+                        this.clinical_subj = response.data;
+                });
+                 this.axios
+                .get('/schedule/'+this.cusid)
+                .then(response=>{
+                        this.schedule_arr = response.data;
+                });
+                this.axios
+                .get('/customerinfo/'+this.cusid)
+                .then(response=>{
+                        this.customer_info = response.data;
+                });
+                this.axios
+                .get('/hospitalinfo/'+this.cusid)
+                .then(response=>{
+                    this.hospital_info = response.data;
+                    
+                    if(this.hospital_info.latitude == 0){
+                        localStorage.setItem('lat_num',35.6803997);
+                        localStorage.setItem('lng_num',139.76901739);
+                    }
+                    else{
+                        localStorage.setItem('lat_num',this.hospital_info.latitude);
+                        localStorage.setItem('lng_num',this.hospital_info.longitude);
+                    }
+                });
+                this.axios
+                .get('/hospital-pgallery/'+this.cusid)
+                .then(response=>{
+                        this.img_arr = response.data;
+                });
+                this.axios
+                .get('/hospital-vgallery/'+this.cusid)
+                .then(response=>{
+                        this.video_arr = response.data;
+                });
+                this.axios
+                .get('/feature/'+this.profile_type+'/'+this.cusid)
+                .then(response=>{
+                        this.feature_list = response.data;
+                });
+                this.axios
+                .get('/facility/'+this.profile_type+'/'+this.cusid)
+                .then(response=>{
+                        this.fac_list = response.data;
+                });
+                // quill.editor.disable()
+        },
+        methods: {
+             imgUrlAlt(event) {
+                event.target.src = "images/noimage.jpg"
+            },
+            scheduletogglediv() {
+                    $(".schedule-toggle-div").toggle('medium');
+                    this.isRotate2 = !this.isRotate2;
+            },
+            maptogglediv() {
+                    $(".map-toggle-div").toggle('medium');
+                    this.isRotate5 = !this.isRotate5;
+            },
+            factogglediv() {
+                    $(".hos-fac-toggle-div").toggle('medium');
+                    this.isRotate3 = !this.isRotate3;
+            },
+            preview_image(img_class,indx) {
+                  $("."+img_class).html("<img src='"+URL.createObjectURL(event.target.files[0])+"' class='img-fluid hospital-image'>");
+                  document.getElementById('already-photo'+indx).src= URL.createObjectURL(event.target.files[0]);
+            },
+            facilityCheck(check_id) {
+                    $('.facility-'+check_id).attr('checked','true');
+            },
+            featureCheck(check_id) {
+                    $('.feature-'+check_id).attr('checked','true');
+            },
+            subjectCheck(check_id) {
+                    $('.subject-'+check_id).attr('checked','true');
+            },
+            clinicalSubject() {
+                     $(".clinical-subject-toggle-div").toggle('medium');
+                     this.isRotate1 = !this.isRotate1;
+
+            },
+            DeltArr(indx,type) {
+                    var arr_list = [];
+                    var arr_count = document.getElementsByClassName('gallery-area-'+type);
+                    for(var i=0; i< arr_count.length; i++) {
+                            arr_list[i] = document.getElementsByClassName('gallery-area-'+type);
+                    }
+                    for(var i=0; i<= arr_count.length; i++) {
+                            if(i == indx) {
+                                    arr_list.splice(indx,1);
+                                    var ele = document.getElementById(type+indx);
+                                    var parentEle = document.getElementById('gallery-'+type);
+                                    parentEle.removeChild(ele);
+                            }
+                    }
+            },
+            galleryAdd() {
+            
+                    var date = new Date;
+                    var s = date.getMilliseconds();
+                    var m = date.getMinutes();
+                    var h = date.getHours();
+                    var classname = "class"+h+m+s;
+                    var c = "'"+classname+"'";
+                    this.img_arr.push({classname:classname,photo:'',title:'',description:''});
+                  
+                   
+      
+                  
+            },
+             galleryToggle()
+                {
+
+                      var class_by_id = $('#gallery').attr('class');
+
+                      if(class_by_id == "fas fa-sort-down animate rotate")
+                      {
+                                $('#gallery').removeClass("fas fa-sort-down animate rotate");
+                                $('.changeGalleryLink').addClass("fas fa-sort-down");
+                                $('#changeGalleryLink').show('medium');
+                                $('.galleryadd').show();
+                      }
+                      else {
+
+
+                                $('#gallery').removeClass("fas fa-sort-down");
+                                $('.changeGalleryLink').removeClass("fas fa-sort-down");
+                                $('#gallery').addClass("fas fa-sort-down animate rotate");
+                                $('#changeGalleryLink').hide('medium');
+                                 $('.galleryadd').show();
+                                      $('.galleryadd').hide();
+                      }
+                },
+                galleryVideoToggle()
+                {
+                       var class_by_id = $('#video').attr('class');
+
+                      if(class_by_id == "fas fa-sort-down animate rotate")
+                      {
+                                $('#video').removeClass("fas fa-sort-down animate rotate");
+                                $('.changeGalleryVideoLink').addClass("fas fa-sort-down");
+                                $('#changeGalleryVideoLink').show('medium');
+                                 $('.galleryvideo').show();
+                      }
+                      else {
+
+                                $('#video').removeClass("fas fa-sort-down");
+                                $('.changeGalleryVideoLink').removeClass("fas fa-sort-down");
+                                $('#video').addClass("fas fa-sort-down animate rotate");
+                                $('#changeGalleryVideoLink').hide('medium');
+                                $('.galleryvideo').hide();
+                      }
+                },
+            onAccessEditorChange({ editor, html, text }) {
+                // console.log('editor change!', editor, html, text)
+                this.access_val = html
+            },
+            galleryVideoAdd() {
+                   this.video_arr.push({title:'',description:'',url:''});
+                 
+            },
+            specialFeAdd() {
+                     $(".special-feature-toggle-div").toggle('medium');
+                     this.isRotate4 = !this.isRotate4;  
+            },
+            Create_Profile () {
+                    this.customer_info = [];
+                    var name = $('.customer-name').val();
+                    var email = $('.customer-email').text();
+                    var phone = $('.customer-phone').val();
+                    var address = $('#city').val();
+                    this.customer_info_push.push({name:name,email:email,phone:phone,address:address});
+
+                    // var access = $('.access').val();
+                    var subject = $('.subject').val();
+                    var specialist = $('.specialist').val();
+                    var details_info = $('.details-info').text();
+                    var close_day = $('.close-day').val();
+                    var website = $('.website').val();
+                    var congestion = $('.congestion').val();
+                    var latitude = $('#new_lat').val();
+                    var longitude = $('#new_long').val();
+                    localStorage.setItem('lat_num',latitude);
+                    localStorage.setItem('lng_num',longitude);
+
+                    var img = document.getElementsByClassName('gallery-area-photo');
+                    let pt = new FormData();
+                    for(var i = 0; i< img.length; i++) {
+                          var file = img[i].getElementsByClassName('hospital-photo')[0].files[0];
+                          if(file) {                   
+                                var file_name = file.name;
+                                pt.append(i ,file )
+
+                                        // let fd = new FormData();
+                                        // fd.append('file' ,file )
+                                        // fd.append('photo' ,file_name )
+                                        // fd.append('type', 'photo')
+                          } else {
+                                  var file_name = img[i].getElementsByClassName('already-photo')[0].value;
+                          }
+                          this.img_list.push({type:"photo",photo:file_name,title:img[i].getElementsByClassName('title')[0].value, description:img[i].getElementsByClassName('description')[0].value});
+                    }
+
+                    this.axios.post('/hospital/movephoto', pt)
+                        .then(response => {
+                            }).catch(error=>{
+                                console.log(error);
+                                if(error.response.status == 422){
+                                    this.errors = error.response.data.errors
+                                }
+                        })
+
+                    var video = document.getElementsByClassName('gallery-area-video');
+                        for(var i = 0; i< video.length; i++) {
+                           this.video_list.push({type:"video",photo:video[i].getElementsByClassName('video-url')[0].value,title:video[i].getElementsByClassName('title')[0].value, description:video[i].getElementsByClassName('description')[0].value});
+                        }
+                     this.gallery_list = this.img_list.concat(this.video_list);
+
+
+                    var s_features =[];
+                        $.each($("input[name='special-features']:checked"), function(){
+                            s_features.push($(this).val());
+                        });
+                        this.chek_feature.push({special_feature_id:s_features});
+
+                     var chek_facility = [];
+                     var facilities ;
+                        $.each($("input[name='facility']:checked"), function(){
+                               chek_facility.push($(this).val());
+                        });
+                        facilities = chek_facility.join(',');
+
+                    var chek_subj = [];
+                        $.each($("input[name='subject']:checked"), function(){
+                               chek_subj.push($(this).val());
+                        });
+                        this.subjects.push({subject_id:chek_subj});
+
+                     // Consultation
+                     for(var j = 0; j< 2; j++) {
+                        for(var i = 0; i< 7; i++) {
+                                if(j == 0) { this.shedule_am[i] = $('.form-control.am-from'+i+'').val() + '-' + $('.form-control.am-to'+i+'').val(); }
+                                if(j == 1) { this.shedule_pm[i] = $('.form-control.pm-from'+i+'').val() + '-' + $('.form-control.pm-to'+i+'').val(); }
+                        }
+                        if(j == 0) { this.schedule_list.push(this.shedule_am); }
+                        if(j == 1) { this.schedule_list.push(this.shedule_pm); }
+                      }
+                       this.save_hospital_info.push({latitude:latitude,longitude:longitude,access:this.access_val,specialist:specialist,details_info:details_info,close_day:close_day,website:website,
+                       congestion:congestion,facilities:facilities});
+                        if(this.gallery_list.length > 0) {
+                                this.axios
+                                    .post(`/hospital/galleryupdate/${this.cusid}`,this.gallery_list)
+                                        .then((response) => {
+                                        }).catch(error=>{
+                                        if(error.response.status == 422){
+                                            this.gallery_list = 'error';
+                                            this.errors = error.response.data.errors
+                                    }
+                                }) ;
+                        }
+                        if(this.customer_info_push.length > 0) {
+                                this.axios
+                                        .post(`/customer/profile/${this.cusid}`,this.customer_info_push)
+                                                .then((response) => {
+
+                                                }).catch(error=>{
+                                                if(error.response.status == 422){
+                                                  this.customer_info_push = 'error';
+                                                  this.errors = error.response.data.errors
+                                        }
+                                }) ;
+                        }
+                        if(this.save_hospital_info.length > 0) {
+                                this.axios
+                                        .post(`/hospital/profile/${this.cusid}`,this.save_hospital_info)
+                                                .then((response) => {
+                                                }).catch(error=>{
+                                                if(error.response.status == 422){
+                                                  this.save_hospital_info = 'error';
+                                                  this.errors = error.response.data.errors
+                                        }
+                                }) ;
+                        }
+                        if(this.schedule_list.length > 0) {
+                                this.axios
+                                        .post(`/schedule/update/${this.cusid}`,this.schedule_list)
+                                                .then((response) => {
+
+                                                }).catch(error=>{
+                                                if(error.response.status == 422){
+                                                  this.schedule_list = 'error';
+                                                  this.errors = error.response.data.errors
+                                }
+                        }) ;
+                        }
+
+                        if(this.chek_feature.length > 0) {
+                                this.axios
+                                        .post(`/sfeature/update/${this.cusid}`,this.chek_feature)
+                                                .then((response) => {
+
+                                                }).catch(error=>{
+                                                if(error.response.status == 422){
+                                                  this.chek_feature = 'error';
+                                                  this.errors = error.response.data.errors
+                                }
+                        }) ;
+                        }
+
+                        if(this.subjects.length > 0) {
+                                this.axios
+                                        .post(`/subject_junctions/update/${this.cusid}`,this.subjects)
+                                                .then((response) => {
+
+                                                }).catch(error=>{
+                                                if(error.response.status == 422){
+                                                  this.subjects = 'error';
+                                                  this.errors = error.response.data.errors
+                                }
+                        }) ;
+                        }
+
+                        if(this.gallery_list != 'error' && this.customer_info != 'error' && this.hospital_info != 'error' && this.schedule_list != 'error') {
+                            this.$swal({
+                                    position: 'top-end',
+                                    type: 'success',
+                                    title: '更新されました',
+                                    confirmButtonText: "はい",
+                                    confirmButtonColor: "#6cb2eb",
+                                    width: 250,
+                                    height: 200,
+                                }).then(response => {
+                                    document.getElementById('nursing').click();
+                            })
+                        }
+                }
+            },
+            getPostal: function(event) {
+                if (this.postal.length > 4) {
+                    var postal = this.postal;
+                    this.axios
+                        .post('/hospital/postList/' + postal)
+                        .then(response => {
+                            var post_data = response.data;
+                            var length = response.data.length;
+                            if (length > 0) {
+                                var pref = post_data[0]['city_id'];
+                                if (post_data[0]['street'] == '') {
+                                    this.city = post_data[0]['city'];
+                                } else {
+                                    this.city = post_data[0]['city'] + ' - ' + post_data[0]['street'];
+                                }
+                                // this.comments.selectedValue = pref;
+                                // this.comments.division = pref;
+                            } else {
+                                this.city = '';
+                                // this.comments.selectedValue = 0;
+                                $('#jsErrorMessage').html('<div class="error">郵便番号の書式を確認してください。</div>');
+                            }
+                        });
+                }
+            },
+            
+           
+        }
+
+</script>
+<style>
+ .quill-editor{
+          background-color: #fff;
+  }
+</style>

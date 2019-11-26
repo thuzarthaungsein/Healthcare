@@ -1,0 +1,692 @@
+<template>
+    <div>
+        <div class="scrolldiv2 pb-5 tab-content" id="nursing">
+            <div class="row m-0">
+                <div class="col-12 pl-0">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <router-link to="/">ホーム</router-link>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">介護のお気に入り</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-12 fav-his-header">
+                        <svg x="0px" y="0px" width="24" height="24" viewBox="0 0 172 172" style=" fill:#000000;">
+                            <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+                                <path d="M0,172v-172h172v172z" fill="none"></path>
+                                <g id="original-icon" fill="#c40000" opacity="0" visibility="hidden">
+                                    <path d="M50.16667,78.83333h107.5v14.33333h-107.5zM50.16667,35.83333h107.5v14.33333h-107.5zM50.16667,121.83333h107.5v14.33333h-107.5zM21.5,75.25c-5.93706,0 -10.75,4.81294 -10.75,10.75c0,5.93706 4.81294,10.75 10.75,10.75c5.93706,0 10.75,-4.81294 10.75,-10.75c0,-5.93706 -4.81294,-10.75 -10.75,-10.75zM21.5,118.25c-5.93706,0 -10.75,4.81294 -10.75,10.75c0,5.93706 4.81294,10.75 10.75,10.75c5.93706,0 10.75,-4.81294 10.75,-10.75c0,-5.93706 -4.81294,-10.75 -10.75,-10.75zM21.5,32.25c-5.93706,0 -10.75,4.81294 -10.75,10.75c0,5.93706 4.81294,10.75 10.75,10.75c5.93706,0 10.75,-4.81294 10.75,-10.75c0,-5.93706 -4.81294,-10.75 -10.75,-10.75z"></path>
+                                </g>
+                                <g id="subtracted-icon" fill="#c40000">
+                                    <path d="M50.16667,78.83333h107.5l0,10.81336c-1.5126,0.69131 -2.92913,1.65951 -4.17264,2.90462l-0.6155,0.61535h-102.71186zM50.16667,35.83333h107.5v14.33333h-107.5zM50.16667,121.83333h24.29256c-1.88479,4.7147 -1.16582,10.22759 2.1569,14.33333h-26.44946zM32.25,86c0,5.93706 -4.81294,10.75 -10.75,10.75c-5.93706,0 -10.75,-4.81294 -10.75,-10.75c0,-5.93706 4.81294,-10.75 10.75,-10.75c5.93706,0 10.75,4.81294 10.75,10.75zM32.25,129c0,5.93706 -4.81294,10.75 -10.75,10.75c-5.93706,0 -10.75,-4.81294 -10.75,-10.75c0,-5.93706 4.81294,-10.75 10.75,-10.75c5.93706,0 10.75,4.81294 10.75,10.75zM32.25,43c0,5.93706 -4.81294,10.75 -10.75,10.75c-5.93706,0 -10.75,-4.81294 -10.75,-10.75c0,-5.93706 4.81294,-10.75 10.75,-10.75c5.93706,0 10.75,4.81294 10.75,10.75zM123.60062,122.43755l-0.6045,-0.60422l1.20887,0z"></path>
+                                </g>
+                                <g>
+                                    <g id="Filled_3_" fill="#c40000">
+                                        <path d="M123.60062,162.99169l-35.82908,-35.82908l10.13652,-10.13652l25.69256,25.69256l40.02993,-40.02993l10.13652,10.13652z"></path>
+                                    </g>
+                                    <g id="Filled_3_" fill="#000000" opacity="0">
+                                        <path d="M183.90358,122.96087l-50.16644,50.16644c-2.79579,2.80295 -6.46615,4.20085 -10.13652,4.20085c-3.67037,0 -7.34073,-1.39789 -10.13652,-4.20085l-35.82908,-35.82908c-5.59874,-5.59874 -5.59874,-14.67429 0,-20.27304l10.13652,-10.13652c5.59157,-5.59874 14.68146,-5.59874 20.27304,0l15.55604,15.54887l29.89341,-29.88624c5.59157,-5.59874 14.68146,-5.59874 20.27304,0l10.13652,10.13652c5.59874,5.59874 5.59874,14.67429 0,20.27304z"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                        &nbsp; <span class="font-weight-bold">お気に入りリスト</span>
+                        &nbsp;<span class ="job_count">{{fav_nus}} 件</span>
+                    </div>
+                </div>
+
+                <!--compare box-->
+                <div class="col-12 mt-2 mb-4">
+                    <div class="row m-0">
+                        <div class="col-md-11 compare-wrap" @click="itemCompare()" data-toggle="modal" data-target=".bd-example-modal-lg">
+                            <dl class="itemBox favnur" id="bd" v-if="!iscompare">
+                                <dt>比較する項目</dt>
+                                <dd>比較する項目が選べます</dd>
+                            </dl>
+                            <dl class="itemBox favnur" id="bd" v-else>
+                                <dt class="pr-4">比較する項目</dt>
+                                <dd>
+                                    <ul class="test">
+                                        <li v-if="address_check">住所</li>
+                                        <li v-if="tran_check">交通手段</li>
+                                        <li v-if="month_check">月額費用</li>
+                                        <li v-if="entry_check">入居一時金</li>
+                                        <li v-if="condition_check">入居条件</li>
+                                        <li v-if="special_check">特長</li>
+                                        <li v-if="capacity_check">定員</li>
+                                        <li v-if="opening_check">開設日</li>
+                                    </ul>
+                                </dd>
+                                <!-- <dd v-if="tran_check" style="width: 84px;">、交通手段</dd>
+                        <dd v-if="month_check" style="width: 80px;">、月額費用</dd>
+                        <dd v-if="entry_check" style="width:100px;">、入居一時金</dd>
+                        <dd v-if="condition_check" style="width:80px;">、入居条件 </dd>
+                        <dd v-if="special_check" style="width: 51px;">、特長</dd>
+                        <dd v-if="medical_check" style="width: 135px;">、医療面の受け入れ</dd>
+                        <dd v-if="capacity_check" style="width:50px;">、定員</dd>
+                        <dd v-if="opening_check" class="da">、開設日</dd> -->
+                            </dl>
+                        </div>
+
+                        <div class="col-md-1 fav-update-wrap">
+                            <button class="fav-update-btn" @click="itemCompare()" data-toggle="modal" data-target=".bd-example-modal-lg">変更する</button>
+                        </div>
+
+                        <div class="modal fade bd-example-modal-lg mycheck" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display:none;">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">比較する項目を選ぶ</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <button class="btn btn-secondary">閉じる&times;</button>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <p>エリア</p>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-check-label control control--checkbox">
+                                                    <input type="checkbox" value="address" v-model="address_check" class="form-check-input"> 住所
+                                                    <div class="control__indicator"></div>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-check-label control control--checkbox">
+                                                    <input type="checkbox" v-model="tran_check" class="form-check-input"> 交通手段
+                                                    <div class="control__indicator"></div>
+                                                </label>
+                                            </div>   
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <p>費用・条件</p>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-check-label control control--checkbox">
+                                                    <input type="checkbox" v-model="month_check" class="form-check-input"> 月額費用
+                                                    <div class="control__indicator"></div>
+                                                </label>
+                                                <br>
+                                                <label style="width:400px;"  class="form-check-label control control--checkbox">
+                                                    <input type="checkbox" v-model="condition_check" class="form-check-input"> 入居条件 （自立、要支援、要介護、認知症相談可）
+                                                    <div class="control__indicator"></div>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-check-label control control--checkbox">
+                                                    <input type="checkbox" v-model="entry_check" class="form-check-input"> 入居一時金
+                                                    <div class="control__indicator"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <p>サービス内容</p>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <label class="form-check-label control control--checkbox">
+                                                    <input type="checkbox" v-model="special_check" class="form-check-input"> 特長 （24時間看護、職員体制、食事メニューの選択など）
+                                                    <div class="control__indicator"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row pb-4">
+                                            <div class="col-md-3">
+                                                <p>施設情報</p>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-check-label control control--checkbox">
+                                                    <input type="checkbox" v-model="capacity_check" class="form-check-input"> 定員
+                                                    <div class="control__indicator"></div>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-check-label control control--checkbox">
+                                                    <input type="checkbox" v-model="opening_check" class="form-check-input"> 開設日
+                                                     <div class="control__indicator"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer text-center">
+                                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <button class="btn btn-secondary" @click="compareBtn()">比較する</button>
+                                        </button> -->
+                                        <button type="button"  data-dismiss="modal" aria-label="Close"  @click="compareBtn()" class="fav-update-btn">
+                                           比較する
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade bd-example-modal-google googlecheck" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display:none;">
+                            <div class="modal-dialog modal-xl" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">交通アクセス／{{custname}}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <button class="btn btn-secondary">閉じる&times;</button>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <GmapMap id="googlemap" ref="map" :center="center" :zoom="10">
+                                            <GmapMarker v-for="(m, index) in markers" :key="index" :position="m.position" :clickable="true" :draggable="true" @click="center=m.position" />
+                                        </GmapMap>
+                                    </div>
+                                    <div class="modal-body">
+                                        <span class="job_ico"><i class="fas fa-map-marker-alt"></i></span><strong>住所</strong>
+                                        <br>
+                                        <span>{{address}}</span>
+                                        <hr>
+                                        <span class="job_ico"><i class="fa fa-map-signs"></i></span><strong>最寄り駅</strong>
+                                        <br>
+                                        <p v-html="access"></p>
+                                    </div>
+                                    <div class="modal-body">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--monthly cost and expense cost -->
+                        <div class="modal fade bd-example-modal-cost costcheck" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display:none;">
+                            <div class="modal-dialog modal-xl" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">料金プラン</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <button class="btn btn-secondary">閉じる&times;</button>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table class="table table-bordered  price_tbl">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">プラン名／居室詳細</th>
+                                                    <th scope="col">入居時費用</th>
+                                                    <th scope="col">月額費用</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="payment in payment_name" :key="payment.id">
+                                                <tr>
+                                                    <td><h5>【増税対応済】{{payment.payment_name}}</h5>
+                                                        <p class="room_type"><span>{{payment.living_room_type}}</span>{{payment.area}}</p>
+                                                    </td>
+                                                    <td class="expense_txt">{{payment.expense_moving}}</td>
+                                                    <td class="expense_txt">{{payment.monthly_fees}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end monthly cost -->
+                    </div>
+                </div>
+            </div>
+            <!--end compare box-->
+            <!--result-->
+            <div class="col-12">
+                <div class="clearfix">
+                    <div class="float-right">
+                        <label class="btn my-2 my-sm-0 all-btn secondary-bg-color btn-secondary control controlinner--checkbox" style="width:300px;">
+                            <input type="checkbox" @change="checkAll()" class="check-all-btn" />
+                            <span class="checkmark"></span>すべての資料請求にチェックを入れる
+                             <div class="controlinner__indicator" style="top:8px;left:7px;"></div>
+                        </label>
+                        <button type="button" class="btn btn-success all-btn float-right m-l-10" @click="addingMail()" :disabled="isdisable">資料請求する</button>
+                    </div>
+                </div>
+                <div class="m-t-20" id="fav-history-page">
+                    <div class="col-12">
+                        <div class="card-carousel-wrapper">
+
+                                <div class="nav-box" @click="moveCarousel(-1)" :disabled="atHeadOfList">
+                                    <div class="nav-content mr-2">
+                                        <div class="card-carousel--nav__left"></div>
+                                    </div>
+                                </div>
+                                <div class="card-carousel">
+                                    <div class="card-carousel--overflow-container">
+                                        <div class="card-carousel-cards" :style="{ transform: 'translateX' + '(' + currentOffset + 'px' + ')'}">
+                                            <div class="card-carousel--card">
+                                            <table class="table table-bordered">
+                                                <tr>
+                                                    <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
+                                                        <div class="profile_img_wrap">
+                                                            <img class="profile_img" style="" v-bind:src="'/upload/nursing_profile/' + nur_profile.logo" alt  @error="imgUrlAlt"/>
+                                                        </div> 
+                                                        <div class="profile_wd">
+                                                            <router-link :to="{name: 'profile', params: {cusid:nur_profile.customer_id, type: 'nursing'}}" class="pseudolink" style="font-weight:bold;">{{nur_profile.name}}</router-link>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
+                                                        <button class="btn btn-danger all-btn hos-btn m-t-8" @click="deleteLocalSto(nur_profile.id)">お気に入りリストから削除</button>
+                                                        <label class="btn all-btn res-btn hos-btn control controlinner--checkbox">
+                                                            <input type="checkbox" value="document_status[nur_profile.id]" name="documentation" class="checkbox2" v-model="document_status[nur_profile.id]" @change="checkSingle(nur_profile.id)">
+                                                            <span class="checkmark"></span>資料請求
+                                                            <div class="controlinner__indicator"></div>                                                        
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                                <tr v-if="address_show">
+                                                    <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
+                                                        <dl>
+                                                            <dt class="text-left">住所</dt>
+                                                            <dd class="profile_wd">
+                                                                {{nur_profile.township_name}} {{nur_profile.city_name}}
+                                                            </dd>
+                                                        </dl>
+                                                    </td>
+                                                </tr>
+                                                <tr v-if="tran_show">
+                                                    <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
+                                                        <dl>
+                                                            <dt class="text-left">交通手段</dt>
+                                                            <dd class="profile_wd">
+                                                                <p v-html="nur_profile.access"></p>
+                                                            </dd>
+                                                        </dl>
+                                                    </td>
+                                                </tr>
+                                                <tr v-if="address_show || tran_show">
+                                                    <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
+                                                        <div v-if="tran_show || address_show" class="profile_wd"><span class="pseudolink" @click="googlemap(nur_profile.id)" data-toggle="modal" data-target=".bd-example-modal-google"><i class="fa fa-search"></i> 地図・交通アクセス</span></div>
+                                                    </td>
+                                                </tr>
+                                                <tr v-if="entry_show">
+                                                    <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
+                                                        <dl>
+                                                            <dt class="text-left">入居時の費用</dt>
+                                                            <dd class="profile_price"><strong>{{(Math.floor(Number(nur_profile.moving_in_from)/10000))==0? '' : (Math.floor(Number(nur_profile.moving_in_from)/10000)).toLocaleString()+'万' }}{{(Number(nur_profile.moving_in_from)%10000)==0 ? '' : (Number(nur_profile.moving_in_from)%10000).toLocaleString()}}円～</strong></dd>
+                                                        </dl>
+                                                    </td>
+                                                </tr>
+                                                <tr v-if="month_show">
+                                                    <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
+                                                        <dl>
+                                                            <dt class="text-left">月額の費用</dt>
+                                                            <dd class="profile_price"><strong>{{(Math.floor(Number(nur_profile.per_month_from)/10000))==0? '' : (Math.floor(Number(nur_profile.per_month_from)/10000)).toLocaleString()+'万' }}{{(Number(nur_profile.per_month_from)%10000)==0 ? '' : (Number(nur_profile.per_month_from)%10000).toLocaleString()}}円～</strong></dd>
+                                                        </dl>
+                                                    </td>
+                                                </tr>
+                                                <tr v-if="month_show || entry_show">
+                                                    <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
+                                                        <div class="profile_wd"><span class="pseudolink" @click="monthlyCost(nur_profile.id)" data-toggle="modal" data-target=".bd-example-modal-cost"><i class="fa fa-search"></i> 料金プランの詳細</span></div>
+                                                    </td>
+                                                </tr>
+                                                <tr v-if="condition_show">
+                                                    <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
+                                                        <dl>
+                                                            <dt class="text-left">入居条件</dt>
+                                                            <dd class="profile_wd">{{nur_profile.occupancy_condition }}</dd>
+                                                        </dl>
+                                                    </td>
+                                                </tr>
+                                                <tr v-if="special_show">
+                                                    <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
+                                                        <div class="profile_wd bd3">
+                                                            <ul class="fac_container m-t-8 m-b-15 m-l-8">
+                                                                <h6 class="font-weight-bold text-left">特長</h6>
+
+                                                                <li v-for="feature in nur_profile.special" :key="feature.id">{{ feature.short_name }}</li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr v-if="capacity_show">
+                                                    <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
+                                                        <dl>
+                                                            <dt class="text-left">定員</dt>
+                                                            <dd v-if="nur_profile.capacity != null" class="profile_wd">{{nur_profile.capacity }} </dd>
+                                                            <dd v-else class="profile_wd">-人</dd>
+                                                        </dl>
+                                                    </td>
+                                                </tr>
+                                                <tr v-if="opening_show">
+                                                    <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
+                                                        <dl>
+                                                            <dt class="text-left">開設日</dt>
+                                                            <dd v-if="opening_show" class="profile_wd">{{nur_profile.date_of_establishment }}</dd>
+                                                        </dl>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <!-- </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="nav-box"  @click="moveCarousel(1)" :disabled="atEndOfList">
+                                <div class="nav-content ml-2">
+                                   <div class="card-carousel--nav__right"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end compare box-->
+            <!--result-->
+
+            <!--end result-->
+
+        </div>
+
+        <button type="button" class="btn btn-success mt-5 float-right" @click="addingMail()" :disabled="isdisable">資料請求する</button>
+    </div>
+</template>
+
+<script>
+    export default {
+        data() {
+                return {
+                    errors: [],
+                    fav_nursing: [],
+                    local_sto: "",
+                    fav_email: [],
+                    arr_email: [],
+                    document_status: [],
+                    modal_btn: false,
+                    address_check: false,
+                    address_show: false,
+                    tran_check: false,
+                    tran_show: false,
+                    month_check: false,
+                    month_show: false,
+                    entry_check: false,
+                    entry_show: false,
+                    condition_check: false,
+                    condition_show: false,
+                    special_check: false,
+                    special_show: false,
+                    capacity_check: false,
+                    capacity_show: false,
+                    opening_check: false,
+                    opening_show: false,
+                    fav_nus :"",
+                    iscompare: false,
+                    markers: [{
+                        position: {
+                            lat: 0.0,
+                            lng: 0.0
+                        }
+                    }],
+                    center: {
+                        lat: 0,
+                        lng: 0
+                    },
+                    address: '',
+                    access: '',
+                    custname: '',
+                    payment_name: [],
+                    currentOffset: 0,
+                    windowSize: 5,
+                    paginationFactor: 267,
+                    disableBtn: false,
+                    check:false
+                };
+            },
+            computed: {
+
+                atEndOfList() {
+                        return this.currentOffset <= (this.paginationFactor * -1) * (this.fav_nursing.length - this.windowSize);
+                    },
+                    atHeadOfList() {
+                        return this.currentOffset === 0;
+                    },
+                    isdisable: function() {
+                        return this.disableBtn;
+                    }
+            },
+
+            created() {
+                // $('.checkbox1').prop("checked", true);
+                this.iscompare = true;
+                this.address_check = true;
+                this.address_show = true;
+                this.tran_check = true;
+                this.tran_show = true;
+                this.month_check = true;
+                this.month_show = true;
+                this.entry_check = true;
+                this.entry_show = true;
+                this.condition_check = true;
+                this.condition_show = true;
+                this.special_check = true;
+                this.special_show = true;
+                this.capacity_check = true;
+                this.capacity_show = true;
+                this.opening_check = true;
+                this.opening_show = true;
+                this.local_sto = localStorage.getItem("nursing_fav");
+                this.getAllFavourite(this.local_sto);
+                if(this.local_sto){
+                    this.fav_nus = this.local_sto.split(",").length;
+                }
+             },
+
+            methods: {
+                moveCarousel(direction) {
+                        // Find a more elegant way to express the :style. consider using props to make it truly generic
+                        if (direction === 1 && !this.atEndOfList) {
+                            this.currentOffset -= this.paginationFactor;
+                        } else if (direction === -1 && !this.atHeadOfList) {
+                            this.currentOffset += this.paginationFactor;
+                        }
+                    },
+                    deleteLocalSto: function(id) {
+                          this.$swal({
+                            title: "確認",
+                            text: "削除よろしいでしょうか",
+                            type: "warning",
+                            width: 350,
+                            height: 200,
+                            showCancelButton: true,
+                            confirmButtonColor: "#dc3545",
+                            cancelButtonColor: "#b1abab",
+                            cancelButtonTextColor: "#000",
+                            confirmButtonText: "削除",
+                            cancelButtonText: "キャンセル",
+                            confirmButtonClass: "all-btn",
+                            cancelButtonClass: "all-btn"
+                        }).then(response => { 
+                             var l_sto = this.local_sto;
+                            var l_sto_arr = l_sto.split(",");
+                            var rm_id = id.toString();
+                            var index = l_sto_arr.indexOf(rm_id);
+                            if (index > -1) {
+                                l_sto_arr.splice(index, 1);
+                                $("#nus-fav-local").html(l_sto_arr.length);
+                                if(l_sto_arr.length == 0){
+                                    $('.fav-nursing-link-box>a').css({'cursor':'not-allowed','pointer-events':'none'})
+                                }
+                                else{
+                                    $('.fav-nursing-link-box>a').css({'cursor':'pointer','pointer-events':'auto'})
+                                    }
+                                var new_local = l_sto_arr.toString();
+                                localStorage.setItem('nursing_fav', new_local);
+                                this.local_sto = localStorage.getItem("nursing_fav");
+                                // this.$swal({
+                                //     title: "削除された",
+                                //     text: "ファイルが削除されました。",
+                                //     type: "success",
+                                //     width: 350,
+                                //     height: 200,
+                                //     confirmButtonText: "はい",
+                                //     confirmButtonColor: "#dc3545"
+                                //     });
+                                if (this.local_sto) {
+                                    this.getAllFavourite(this.local_sto);
+                                } else {
+                                    // window.location.reload();
+                                    this.$router.push({
+                                        name: 'nursingSearch',
+                                        // params: {
+                                        //     page: 'subtab3'
+                                        // }
+                                    });
+                                }
+                            }
+                      
+                         });
+                            // alert('Delete Successfully!');
+                           
+                        if(this.local_sto){
+                            this.fav_nus = this.local_sto.split(",").length;
+                        }
+                    },
+                    getAllFavourite: function(local_storage) {
+                        this.axios
+                            .post('/nursing_fav/' + local_storage)
+                            .then(response => {
+                                this.fav_nursing = response.data;
+                                for (var i = 0; i < this.fav_nursing.length; i++) {
+                                    var j = this.fav_nursing[i].id;
+                                    if (this.document_status[j] == true) {
+                                        this.disableBtn = false;
+                                    } else {
+                                        this.disableBtn = true;
+                                    }
+                                }
+
+                            });
+                    },
+                    addingMail() {
+                        for (var i = 0; i < this.fav_nursing.length; i++) {
+                            this.fav_email.push({
+                                'id': this.fav_nursing[i]['id'],
+                                'email': this.fav_nursing[i]['email'],
+                                'name': this.fav_nursing[i]['name']
+                            });
+                        }
+                        localStorage.setItem("document", JSON.stringify(this.document_status));
+                        localStorage.removeItem("item");
+                        localStorage.setItem("item", JSON.stringify(this.fav_email));
+                        this.$router.push({
+                            name: 'nursingFavouriteMail',
+                            // params: { favmail: this.fav_email},
+                            // props: true
+                        });
+                    },
+                    checkAll() {
+                        this.disableBtn = false;
+                        if ($('.check-all-btn').is(":checked")) {
+                            // $('.checkbox1').prop("checked", true);
+                            // $('.checkbox2').prop("checked", true);
+                        } else {
+                            // $('.checkbox1').prop("checked", false);
+                            // $('.checkbox2').prop("checked", false);
+                             this.disableBtn = true;
+                        }
+                        for (var i = 0; i < this.fav_nursing.length; i++) {
+                            var j = this.fav_nursing[i].id;
+                            if ($('.check-all-btn').is(":checked")) {
+                                this.document_status[j] = true;
+                                // this.reserv_status[j] = true;
+                            } else {
+                                this.document_status[j] = false;
+                                // this.reserv_status[j] = false;
+                            }
+                        }
+                    },
+                    checkSingle(nid) {
+                        if (this.document_status[nid]) {
+                            this.disableBtn = false;
+                        }
+                        else if(!this.document_status.includes(true)){
+                            this.disableBtn = true;
+                        }
+                    },
+                    itemCompare() {
+                        $('.mycheck').css('display', 'block');
+
+                    },
+                    compareBtn() {
+                        if (this.address_check == true || this.tran_check == true || this.month_check == true || this.entry_check == true || this.condition_check == true || this.special_check == true || this.capacity_check == true || this.opening_check == true) {
+                            this.iscompare = true;
+                        } else {
+                            this.iscompare = false;
+                        }
+                        if (this.address_check == true) {
+                            this.address_show = true;
+                        } else {
+                            this.address_show = false;
+                        }
+                        if (this.tran_check == true) {
+                            this.tran_show = true;
+                        } else {
+                            this.tran_show = false;
+                        }
+                        if (this.month_check == true) {
+                            this.month_show = true;
+                        } else {
+                            this.month_show = false;
+                        }
+                        if (this.entry_check == true) {
+                            this.entry_show = true;
+                        } else {
+                            this.entry_show = false;
+                        }
+                        if (this.condition_check == true) {
+                            this.condition_show = true;
+                        } else {
+                            this.condition_show = false;
+                        }
+                        if (this.special_check == true) {
+                            this.special_show = true;
+                        } else {
+                            this.special_show = false;
+                        }
+                        if (this.capacity_check == true) {
+                            this.capacity_show = true;
+                        } else {
+                            this.capacity_show = false;
+                        }
+                        if (this.opening_check == true) {
+                            this.opening_show = true;
+                        } else {
+                            this.opening_show = false;
+                        }
+                    },
+                    googlemap: function(id) {
+                        $('.googlecheck').css('display', 'block');
+                        for (var i = 0; i < this.fav_nursing.length; i++) {
+                            if (this.fav_nursing[i].id == id) {
+                                this.address = this.fav_nursing[i].address;
+                                this.access = this.fav_nursing[i].access;
+                                this.markers[0]['position']['lat'] = this.fav_nursing[i].latitude;
+                                this.markers[0]['position']['lng'] = this.fav_nursing[i].longitude;
+                                this.center['lat'] = this.fav_nursing[i].latitude;
+                                this.center['lng'] = this.fav_nursing[i].longitude;
+                                this.custname = this.fav_nursing[i].name;
+                            }
+                        }
+                    },
+                    monthlyCost: function(id) {
+                        $('.costcheck').css('display', 'block');
+                        for (var i = 0; i < this.fav_nursing.length; i++) {
+                            if (this.fav_nursing[i].id == id) {
+                                this.payment_name = this.fav_nursing[i].payment_method;
+                            }
+                        }
+                    },
+                imgUrlAlt(event) {
+                event.target.src = "images/noimage.jpg"
+            }
+            }
+    };
+</script>
